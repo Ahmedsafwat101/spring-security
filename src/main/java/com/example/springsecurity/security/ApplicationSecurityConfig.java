@@ -13,13 +13,17 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+import static com.example.springsecurity.utils.ApplicationUserRole.ADMIN;
+import static com.example.springsecurity.utils.ApplicationUserRole.STUDENT;
+
 @Configuration
 @EnableWebSecurity
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/").permitAll()
+                .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
+                .antMatchers("/api/**").hasRole(STUDENT.name())
                 .anyRequest()
                 .authenticated().and().httpBasic();
     }
@@ -28,20 +32,14 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        auth.inMemoryAuthentication().withUser("ahmed").password(encoder.encode("12345")).roles("Student");
+        auth.inMemoryAuthentication().withUser("ahmed")
+                .password(encoder.encode("12345")).roles(STUDENT.name())
+
+                .and()
+
+                .withUser("Abbas")
+                .password(encoder.encode("123456789")).roles(ADMIN.name());
     }
-
-//    @Override
-//    @Bean
-//    protected UserDetailsService userDetailsService() {
-//        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-//        UserDetails user = User.builder()
-//                .username("Ahmed")
-//                .password(encoder.encode("12345"))
-//                .roles("student")
-//                .build();
-//
-//        return new InMemoryUserDetailsManager(user);
-//    }
-
 }
+
+
