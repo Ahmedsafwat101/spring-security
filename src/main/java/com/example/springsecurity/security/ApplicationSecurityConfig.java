@@ -16,6 +16,8 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+import java.util.concurrent.TimeUnit;
+
 import static com.example.springsecurity.utils.ApplicationUserRole.*;
 
 @Configuration
@@ -34,9 +36,12 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/login")
                 .permitAll()
-                .defaultSuccessUrl("/classes",true)
+                .defaultSuccessUrl("/classes", true)
                 .and()
-                .rememberMe(); // 2 weeks
+                .rememberMe()  // default is 2 weeks
+                .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(21))
+                .key("we should use a secure key to hash the expiration " +
+                        "date and the name of the user instead of using spring default key");
         ;
     }
 
