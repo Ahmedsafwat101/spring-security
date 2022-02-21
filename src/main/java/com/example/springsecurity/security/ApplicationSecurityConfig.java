@@ -33,7 +33,11 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated().and()
                 .formLogin()
                 .loginPage("/login")
-                .permitAll();
+                .permitAll()
+                .defaultSuccessUrl("/classes",true)
+                .and()
+                .rememberMe(); // 2 weeks
+        ;
     }
 
     @Override
