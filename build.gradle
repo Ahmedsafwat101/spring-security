@@ -13,8 +13,19 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.6.2'
+    implementation 'com.google.guava:guava:31.0.1-jre'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.6.3'
+
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+    implementation 'org.springframework.boot:spring-boot-starter-security:2.6.2'
+
+    implementation 'com.google.guava:guava:31.0.1-jre'
+
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.2'
 }
 
 test {
